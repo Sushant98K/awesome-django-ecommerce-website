@@ -1,0 +1,94 @@
+{% load static %}
+
+<style>
+/* Toast container positioning */
+.toast-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1055; /* Ensure it appears above other elements */
+}
+
+/* Toast element styling */
+.toast {
+    background: rgba(255, 255, 255, 0.8); /* Transparent white */
+    color: #212529; /* Dark text for readability */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border for definition */
+    border-radius: 0.5rem; /* Rounded corners for a modern look */
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2); /* Smooth shadow for depth */
+    padding: 1rem;
+    max-width: 350px;
+    font-size: 1rem;
+    opacity: 0; /* Initially hidden */
+    transform: translateY(20px); /* Initial position for slide-in animation */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Smooth fade-in and slide-in */
+}
+
+/* Toast header styling */
+.toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9); /* Slightly less transparent */
+    color: #495057; /* Neutral gray text */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle divider */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem 0.5rem 0 0; /* Matches toast corners */
+}
+
+.toast-header .btn-close {
+    border: none; /* Remove border */
+    background: none; /* Transparent background */
+    font-size: 1.25rem;
+    color: #495057;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.toast-header .btn-close:hover {
+    opacity: 1;
+}
+
+/* Toast body styling */
+.toast-body {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Toast visibility control */
+.toast.show {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Reset position */
+}
+</style>
+</style>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast" id="welcomeToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header d-flex justify-content-between align-items-center">
+            <img src="{% static 'userauth/img/logo-light.png' %}" class="rounded me-2" alt="Logo" style="height: 20px;">
+            <div class="d-flex align-items-center ms-auto">
+                <small class="text-body-secondary me-2">{{ toast_timestamp|default:"Now" }}</small>
+                <button type="button" class="close text-dark" data-bs-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="toast-body">
+            {{ toast_message|default:"" }}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('welcomeToast');
+        if (toastElement && toastElement.querySelector('.toast-body').innerText.trim() !== '') {
+            const toastInstance = new bootstrap.Toast(toastElement, { autohide: false }); // Toast stays visible until closed
+            toastElement.classList.add('show'); // Show the toast
+            toastInstance.show(); // Display the toast
+        }
+    });
+</script>

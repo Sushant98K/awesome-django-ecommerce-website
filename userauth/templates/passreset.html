@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zamazor | register</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'userauth/css/bootstrap.min.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'userauth/css/iofrm-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'userauth/css/iofrm-theme19.css' %}">
+</head>
+<body>
+    <div class="form-body without-side">
+        <div class="website-logo">
+            <a href=" {% url 'home' %} ">
+                <div class="logo">
+                    <img class="" src="{% static 'userauth/img/logo-light.png' %}" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="iofrm-layout">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <img src="{% static 'userauth/img/graphic3.svg' %}" alt="">
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Change your password</h3>
+                        <p> Enter a new password below to change your password </p>
+                        {% if messages %}
+                        <div class="alert alert-light" role="alert">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input class="form-control" type="password" name="newpass1" placeholder="Enter new password" required>
+                            <input class="form-control" type="password" name="newpass2" placeholder="Confirm new password" required>
+                            <div class="form-button">
+                                <button id="submit" type="submit" class="ibtn">Change Password</button>
+                            </div>
+                        </form>
+                        <div class="page-links pt-4">
+                            <a href="{% url 'login' %}">Back To Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'userauth/js/jquery.min.js' %}"></script>
+    <script src="{% static 'userauth/js/popper.min.js' %}"></script>
+    <script src="{% static 'userauth/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'userauth/js/main.js' %}"></script>
+</body>
+</html>

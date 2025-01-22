@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zamazor | reset</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'userauth/css/bootstrap.min.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'userauth/css/iofrm-style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'userauth/css/iofrm-theme19.css' %}">
+</head>
+<body>
+    <div class="form-body without-side">
+        <div class="website-logo">
+            <a href=" {% url 'home' %} ">
+                <div class="logo">
+                    <img class="" src="{% static 'userauth/img/logo-light.png' %}" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="iofrm-layout">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <img src="{% static 'userauth/img/graphic3.svg' %}" alt="">
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Password Reset</h3>
+                        <form method="post">
+                            <p></p>
+                            {% csrf_token %}
+                            <input class="form-control" type="email" name="email" placeholder="Enter your email" required>
+                            <div class="form-button full-width">
+                                <button class="ibtn btn-primary" type="submit">Send Reset Link</button>
+                            </div>
+                        </form>
+                        <p></p>
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'userauth/js/jquery.min.js' %}"></script>
+    <script src="{% static 'userauth/js/popper.min.js' %}"></script>
+    <script src="{% static 'userauth/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'userauth/js/main.js' %}"></script>
+</body>
+</html>

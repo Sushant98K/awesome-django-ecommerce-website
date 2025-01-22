@@ -1,0 +1,57 @@
+.page1 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5vw;
+}
+#moving-div {
+  /* background-color: red; */
+  position: absolute;
+  bottom: 3%;
+  white-space: nowrap;
+  width: 60%;
+  padding: 1.2vw;
+  overflow: hidden;
+}
+#moving-div .move {
+  display: inline-block;
+  animation-name: move;
+  animation-duration: 11s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+#moving-div .move img {
+  height: 2vw;
+  margin: 0 1.2vw;
+  filter: grayscale(100%);
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0);
+  }
+  100% {
+    transform: translate(-100%);
+  }
+}
+#blur-left {
+  /* background-color: red; */
+  height: 100%;
+  width: 20%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background: linear-gradient(to left, transparent, #f5f5f5);
+}
+#blur-right {
+  background: linear-gradient(to right, transparent, #f5f5f5);
+  height: 100%;
+  width: 20%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
