@@ -30,6 +30,48 @@
 </head>
 
 <body>
+    <style>
+        #suggestions-box a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        }
+        #suggestions-box a:last-child {
+            border-bottom: none;
+        }
+        #suggestions-box {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        #suggestions-box {
+            width: 100%;
+            max-width: 100%;
+            position: absolute;
+            z-index: 1000;
+            display: none;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 5px;
+        }
+
+        .suggestion-item {
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .suggestion-item:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+        }
+
+    </style>
     
 
         <!-- Topbar Start -->
@@ -94,12 +136,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            {% comment %} <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
                 <div class="col-lg-4">
-                    {% comment %} <a href="" class="text-decoration-none">
-                        <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                    </a> {% endcomment %}
                     <a href="" class="text-decoration-none"><img class='img-fluid' style="width: 200px; height: 70px; " src="{% static 'img/ZamAzor.png' %}" alt=""><strong class="text-dark" style="position: relative; left: -10px; top: -3px;">.in</strong></a>
                 </div>
                 <div class="col-lg-4 col-6 text-left">
@@ -118,7 +156,45 @@
                     <p class="m-0">Customer Service</p>
                     <h5 class="m-0">+012 345 6789</h5>
                 </div>
+            </div> {% endcomment %}
+
+
+
+
+            <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+                <div class="col-lg-4">
+                    <a href="" class="text-decoration-none"><img class='img-fluid' style="width: 200px; height: 70px;" src="{% static 'img/ZamAzor.png' %}" alt=""><strong class="text-dark" style="position: relative; left: -10px; top: -3px;">.in</strong></a>
+                </div>
+                <div class="col-lg-4 col-6 text-left">
+                    <form id="search-form" action="{% url 'shop' %}" method="get">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="search-input" placeholder="Search for products" name="search" autocomplete="off">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-transparent text-primary">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="suggestions-box" 
+                        style="position: absolute; z-index: 1000; display: none; width: 515px; background-color: #f8f9fa; 
+                                border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+                                max-height: 300px; overflow-y: auto; margin-top: 5px;">
+                        <!-- Suggestions will appear here dynamically -->
+                    </div>
+                </div>
+                <div class="col-lg-4 col-6 text-right">
+                    <p class="m-0">Customer Service</p>
+                    <h5 class="m-0">+012 345 6789</h5>
+                </div>
             </div>
+
+
+
+
+
+
+
         </div>
         <!-- Topbar End -->
 
@@ -278,9 +354,7 @@
 
     
 
-
-
-
+    
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -290,6 +364,7 @@
     <!-- Contact Javascript File -->
     <script src="{% static 'mail/jqBootstrapValidation.min.js' %}"></script>
     <script src="{% static 'mail/contact.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Template Javascript -->
     <script>
@@ -299,6 +374,63 @@
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
     <script src="https://kit.fontawesome.com/4b46b6231e.js" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('search-input').addEventListener('input', function () {
+        let query = this.value.trim();
+
+        if (query.length >= 2) {  // Only show suggestions if the query has at least 2 characters
+            fetch(`/core/search-suggestions/?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let suggestionsBox = document.getElementById('suggestions-box');
+                    suggestionsBox.innerHTML = '';  // Clear previous suggestions
+                    if (data.suggestions.length > 0) {
+                        suggestionsBox.style.display = 'block';  // Show the suggestions box
+                        data.suggestions.forEach(product => {
+                            let suggestionItem = document.createElement('div');
+                            suggestionItem.classList.add('suggestion-item');
+                            suggestionItem.innerHTML = `
+                                <a href="/product/product-detail/${product.id}" class="d-block" style="padding: 8px 12px; font-size: 14px; color: black; text-decoration: none;">
+                                    <img src="${product.product_img}" alt="${product.pname}" 
+                                        style="width: 50px; height: 50px; object-fit: cover; display: inline-block;">
+                                    <span style="margin-left: 10px;">${product.pname}</span> - ₹${product.discounted_price}
+                                </a>
+                            `;
+                            suggestionItem.style.cursor = 'pointer';
+
+                            suggestionItem.addEventListener('mouseover', function () {
+                                suggestionItem.style.backgroundColor = '#e9ecef';
+                                suggestionItem.style.color = '#007bff';
+                            });
+
+                            suggestionItem.addEventListener('mouseout', function () {
+                                suggestionItem.style.backgroundColor = '';
+                                suggestionItem.style.color = '';
+                            });
+
+                            suggestionsBox.appendChild(suggestionItem);
+                        });
+                    } else {
+                        suggestionsBox.style.display = 'none';  // Hide the box if no suggestions
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        } else {
+            document.getElementById('suggestions-box').style.display = 'none';  // Hide if query is too short
+        }
+    });
+
+    document.getElementById('search-input').addEventListener('blur', function () {
+        setTimeout(() => {
+            document.getElementById('suggestions-box').style.display = 'none';
+        }, 200);  // Wait a bit to ensure the user doesn't accidentally click a suggestion
+    });
+
+
+    </script>
+    
     
     {% block scriptlink %}
         
