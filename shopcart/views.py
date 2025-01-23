@@ -19,17 +19,22 @@ def addToCart(request):
     prodId = request.GET.get('prodId')
     product = Product.objects.get(id=prodId)
     
-    # Check if product already in cart for the user
+    # Check if the product is already in the cart
     cart_item = Cart.objects.filter(user=user, product=product).first()
     if cart_item:
-        # If already in cart, increment quantity
         cart_item.quantity += 1
         cart_item.save()
     else:
-        # If not in cart, add new item
-        Cart(user=user, product=product).save()
+        Cart.objects.create(user=user, product=product, quantity=1)
     
-    return redirect('show_cart')
+    # Redirect logic based on 'buy_now' parameter
+    buy_now = request.GET.get('buy_now', 'false') == 'true'
+    if buy_now:
+        return redirect('show_cart')  # Redirect to the cart
+    
+    # Stay on the same page for Add to Cart
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 # Show Cart function
 @login_required

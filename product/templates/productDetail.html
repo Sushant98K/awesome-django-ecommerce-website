@@ -131,12 +131,28 @@
                                 </button>
                             </div>
                         </div>
-                        <form action=" {% url 'add_to_cart' %}" >
+                        {% comment %} <form action=" {% url 'add_to_cart' %}" >
                             <input type="hidden" name="prodId" value=" {{product.id}} ">
                             <button type="submit" class="btn btn-primary px-3 mr-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                        </form> {% endcomment %}
+                        <form class="add-to-cart-form" action="{% url 'add_to_cart' %}">
+                            <input type="hidden" name="prodId" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-primary px-3 mr-3">
+                                <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                            </button>
                         </form>
 
-                        <button class="btn btn-primary px-3"><i class="fa-solid fa-truck mr-1"></i> Buy Now</button>
+
+
+                        {% comment %} <button class="btn btn-primary px-3"><i class="fa-solid fa-truck mr-1"></i> Buy Now</button> {% endcomment %}
+                        <form action="{% url 'add_to_cart' %}">
+                            <input type="hidden" name="prodId" value="{{ product.id }}">
+                            <input type="hidden" name="buy_now" value="true">
+                            <button type="submit" class="btn btn-primary px-3">
+                                <i class="fa-solid fa-truck mr-1"></i> Buy Now
+                            </button>
+                        </form>
+
                     </div>
 
 
@@ -420,6 +436,8 @@
 
 {% endblock maincontent %}
 
+        
+    
 
 
 
