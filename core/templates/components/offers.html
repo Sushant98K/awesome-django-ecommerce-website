@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 
         <div class="container-fluid pt-5 pb-3">
             <div class="row px-xl-5">
@@ -23,4 +23,98 @@
                     </div>
                 </div>
             </div>
+        </div>{% endcomment %}
+
+
+{% load static %}
+
+<style>
+.product-offer {
+    position: relative;
+    overflow: hidden;
+    height: 300px;
+}
+
+.product-offer video {
+    display: block; /* Ensure the video is visible */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1; /* Ensure video is behind the text */
+    transition: opacity 0.3s ease; /* Smooth fade-in effect */
+    opacity: 0; /* Initially hide the video */
+    pointer-events: none; /* Disable mouse interactions with the video */
+}
+
+.product-offer:hover video {
+    opacity: 1; /* Make video fully visible on hover */
+}
+
+.offer-text {
+    position: relative;
+    z-index: 2; /* Ensure text is above the video */
+    color: white; /* Ensure text is visible */
+    text-align: center;
+    top: 50%;
+}
+
+.offer-text h6,
+.offer-text h3,
+.offer-text a {
+    transition: opacity 0.3s ease; /* Smooth fade effect */
+}
+
+.product-offer:hover .offer-text {
+    opacity: 1; /* Ensure text stays fully visible */
+}
+</style>
+
+<div class="container-fluid pt-5 pb-3">
+    <div class="row px-xl-5">
+        <div class="col-md-6">
+            <div class="product-offer mb-30">
+                <img class="img-fluid" src="{% static 'img/offer-1.png' %}" alt="">
+                <video class="video-fluid" muted loop preload="auto" id="video1">
+                    <source src="{% static 'videos/offer-1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="offer-text">
+                    <h6 class="text-white text-uppercase">Save 20%</h6>
+                    <h3 class="text-white mb-3">Special Offer</h3>
+                    <a href="" class="btn btn-primary">Shop Now</a>
+                </div>
+            </div>
         </div>
+        <div class="col-md-6">
+            <div class="product-offer mb-30">
+                <img class="img-fluid" src="{% static 'img/offer-2.png' %}" alt="">
+                <video class="video-fluid" muted loop preload="auto" id="video2">
+                    <source src="{% static 'videos/offer-2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="offer-text">
+                    <h6 class="text-white text-uppercase">Save 20%</h6>
+                    <h3 class="text-white mb-3">Special Offer</h3>
+                    <a href="" class="btn btn-primary">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Play video on hover
+    document.querySelectorAll('.product-offer').forEach(offer => {
+        const video = offer.querySelector('video');
+        offer.addEventListener('mouseenter', () => {
+            video.play();
+        });
+        offer.addEventListener('mouseleave', () => {
+            video.pause();
+            video.currentTime = 0; // Reset video to start
+        });
+    });
+</script>
