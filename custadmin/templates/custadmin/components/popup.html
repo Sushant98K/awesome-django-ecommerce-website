@@ -1,0 +1,33 @@
+{% load static %}
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast fade" role="alert" aria-live="assertive" aria-atomic="true" data-bs-toggle="toast">
+                <div class="toast-header d-block">
+                    <div class="float-end">
+                        <small>Just now</small>
+                        <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="auth-logo">
+                        <img class="logo-dark me-1" src="{% static 'custadmin/images/logo-dark.png' %}" alt="logo-dark" height="18" />
+                        <img class="logo-light" src="{% static 'custadmin/images/logo-light.png' %}" alt="logo-light" height="18" />
+                    </div>
+                </div>
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastElements = document.querySelectorAll('.toast');
+        toastElements.forEach(toastEl => {
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        });
+    });
+</script>

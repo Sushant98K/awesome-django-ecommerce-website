@@ -21,8 +21,10 @@ urlpatterns = [
     path('auth-signup/', auth_signup, name='auth-signup'),
 
     path('category-add/', category_add, name='category-add'),
+    
+    path('category-delete/<int:category_id>/', category_delete, name='category-delete'),
 
-    path('category-edit/', category_edit, name='category-edit'),
+    path('category-edit/<int:category_id>', category_edit, name='category-edit'),
 
     path('category-list/', category_list, name='category-list'),
 

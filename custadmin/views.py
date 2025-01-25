@@ -1,4 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.contrib import messages
+from django.http import HttpResponse
+from django.core.paginator import Paginator
+from product.models import *
 
 def dashboard(request):
     title = 'Admin Panel | Dashboard Overview'
@@ -48,17 +53,88 @@ def auth_signup(request):
 def category_add(request):
     title = 'Admin Panel | Create Category'
     herotag = 'Create Category'
+    error_message = None
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        shortform = request.POST.get('shortform')
+        description = request.POST.get('description', '')
+        category_img = request.FILES.get('category_img')
+
+        # Validation
+        if not name or not shortform:
+            error_message = "Name and Shortform are required!"
+        else:
+            # Save the new category (product_count will default to 0)
+            category = Category(
+                name=name,
+                shortform=shortform,
+                description=description,
+                category_img=category_img,
+            )
+            category.save()
+            messages.success(request, f'Category "{name}" created successfully.')
+            return redirect('category-list')
+    
     return render(request, 'custadmin/category-add.html', locals())
 
-def category_edit(request):
+
+def category_edit(request, category_id):
     title = 'Admin Panel | Edit Category'
     herotag = 'Update Category Information'
+    category = get_object_or_404(Category, id=category_id)
+
+    if request.method == 'POST':
+        # Update category general information
+        category.name = request.POST.get('name')
+        category.shortform = request.POST.get('shortform')
+        category.product_count = request.POST.get('product_count')
+        category.description = request.POST.get('description')
+
+        # Handle image upload
+        if 'category_img' in request.FILES:
+            category.category_img = request.FILES['category_img']
+
+        category.save()
+        messages.success(request, f'Category "{category.name}" updated successfully!')
+        return redirect('category-list')  # Redirect to category list or any other page after saving
+    
     return render(request, 'custadmin/category-edit.html', locals())
+
+
+def category_delete(request, category_id):
+    if request.method == 'POST':
+        try:
+            category = Category.objects.get(id=category_id)
+            category.delete()
+            messages.success(request, f'Category "{category.name}" deleted successfully!')
+            return JsonResponse({'success': True})
+        except Exception as e:
+            messages.error(request, f'Error deleting category: {str(e)}')
+            return JsonResponse({'success': False})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
 
 def category_list(request):
     title = 'Admin Panel | Category List'
     herotag = 'View All Categories'
-    return render(request, 'custadmin/category-list.html', locals())
+
+    # Fetch all categories
+    categories = Category.objects.all()
+
+    # Paginate the categories (6 per page)
+    paginator = Paginator(categories, 6)
+    page_number = request.GET.get('page', 1)  # Get the current page number from the request
+    page_obj = paginator.get_page(page_number)  # Get the paginated page object
+
+    context = {
+        'title': title,
+        'herotag': herotag,
+        'categories': page_obj,  # Pass the paginated categories
+    }
+    return render(request, 'custadmin/category-list.html', context)
+
 
 def coupons_add(request):
     title = 'Admin Panel | Create Coupon'
@@ -209,3 +285,9 @@ def settings(request):
     title = 'Admin Panel | Settings'
     herotag = 'Manage System Settings'
     return render(request, 'custadmin/settings.html', locals())
+
+
+
+
+
+
