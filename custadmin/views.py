@@ -1,3 +1,5 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.contrib import messages
@@ -5,9 +7,16 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from product.models import *
 
+
+@login_required(login_url='login')
 def dashboard(request):
+    if not request.user.is_staff and not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access this page.')
+        return redirect('auth-signin')
+    
     title = 'Admin Panel | Dashboard Overview'
     herotag = 'Welcome!'
+    
     return render(request, 'custadmin/dashboard.html', locals())
 
 def apps_calendar(request):
@@ -43,13 +52,37 @@ def auth_password(request):
 def auth_signin(request):
     title = 'Admin Panel | Sign In'
     herotag = 'Access Your Account'
+
+    if request.method == 'POST':
+        username_or_email = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username_or_email, password=password)
+
+        if user is not None:
+            if user.is_staff or user.is_superuser:
+                login(request, user)
+                username = user.username.capitalize()
+                messages.success(request, f'Welcome &nbsp; <strong style="color:#FF9A69;">{username}</strong>! &nbsp; You have successfully logged in.')
+                return redirect('dashboard')  # Redirect to the dashboard view
+            else:
+                messages.error(request, 'Access denied. Only staff or admin users can sign in.')
+                return redirect('login')
+        else:
+            messages.error(request, 'Invalid username or password.')
+
     return render(request, 'custadmin/auth-signin.html', locals())
+
+def auth_logout(request):
+    logout(request)
+    messages.success(request, "You have successfully logged out.")
+    return render(request, 'custadmin/auth-signin.html')
 
 def auth_signup(request):
     title = 'Admin Panel | Register Account'
     herotag = 'Register New Account'
     return render(request, 'custadmin/auth-signup.html', locals())
 
+@login_required(login_url='login')
 def category_add(request):
     title = 'Admin Panel | Create Category'
     herotag = 'Create Category'
@@ -73,12 +106,13 @@ def category_add(request):
                 category_img=category_img,
             )
             category.save()
-            messages.success(request, f'Category "{name}" created successfully.')
+            messages.success(request, f'Category "<strong style="color:#FF9A69;">{name}</strong>" created successfully.')
             return redirect('category-list')
     
     return render(request, 'custadmin/category-add.html', locals())
 
 
+@login_required(login_url='login')
 def category_edit(request, category_id):
     title = 'Admin Panel | Edit Category'
     herotag = 'Update Category Information'
@@ -96,12 +130,12 @@ def category_edit(request, category_id):
             category.category_img = request.FILES['category_img']
 
         category.save()
-        messages.success(request, f'Category "{category.name}" updated successfully!')
+        messages.success(request, f'Category "<strong style="color:#FF9A69;">{category.name}</strong>" updated successfully!')
         return redirect('category-list')  # Redirect to category list or any other page after saving
     
     return render(request, 'custadmin/category-edit.html', locals())
 
-
+@login_required(login_url='login')
 def category_delete(request, category_id):
     if request.method == 'POST':
         try:
@@ -115,7 +149,7 @@ def category_delete(request, category_id):
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-
+@login_required(login_url='login')
 def category_list(request):
     title = 'Admin Panel | Category List'
     herotag = 'View All Categories'

@@ -205,7 +205,7 @@
 
                                         <div class="dropdown-divider my-1"></div>
 
-                                        <a class="dropdown-item text-danger" href="{% url 'auth-signin' %} ">
+                                        <a class="dropdown-item text-danger" href="{% url 'auth_logout' %}">
                                              <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                         </a>
                                    </div>
@@ -537,7 +537,7 @@
                                              <a class="sub-nav-link" href="{% url 'category-edit' 1 %} ">Edit</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="{% url 'category-add' %} ">Create</a>
+                                             <a class="sub-nav-link" href="{% url 'category-add' %}">Create</a>
                                         </li>
                                    </ul>
                               </div>
