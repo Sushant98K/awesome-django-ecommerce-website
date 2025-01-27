@@ -70,7 +70,7 @@
                                         </form>
                                    </div>
                               </div>
-                              <form method="POST" action="{% url 'category-edit' category.id %}">
+                              <form method="POST" action="{% url 'category-edit' category.id %}" enctype="multipart/form-data">
                               {% csrf_token %}
                                    <div class="card">
                                         <div class="card-header">
@@ -95,20 +95,26 @@
                                                                  <option value="Other">Other</option>
                                                             </select>
                                                   </div>
-                                                  <div class="col-lg-6">
+                                                  <div class="col-lg-4">
                                                             <div class="mb-3">
                                                                  <label for="product-stock" class="form-label">Stock</label>
                                                                  <input type="number" id="product-stock" class="form-control" name="product_count" placeholder="Quantity" value="{{ category.product_count }}">
                                                             </div>
                                                   </div>
-                                                  <div class="col-lg-6">
+                                                  <div class="col-lg-4">
                                                        
                                                             <div class="mb-3">
                                                                  <label for="product-id" class="form-label">Short Form</label>
                                                                  <input type="text" id="product-id" class="form-control" placeholder="#******" value="{{ category.shortform|upper }}-0{{ category.id }}315">
                                                             </div>
                                                   </div>
-                                                  <div class="col-lg-12">
+                                                  <div class="col-lg-4">
+                                                       <div class="mb-3">
+                                                            <label for="category-img" class="form-label">category Image</label>
+                                                            <input type="file" id="category-img" name="category_img" class="form-control">
+                                                       </div>
+                                                  </div>
+                                                            <div class="col-lg-12">
                                                        <div class="mb-0">
                                                             <label for="description" class="form-label">Description</label>
                                                             <textarea class="form-control bg-light-subtle" id="description" rows="5" name="description" placeholder="Type description">{{ category.description }}</textarea>

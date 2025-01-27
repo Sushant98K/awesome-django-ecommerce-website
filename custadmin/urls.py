@@ -71,7 +71,7 @@ urlpatterns = [
 
     path('product-details/', login_required(product_details), name='product-details'),
 
-    path('product-edit/', login_required(product_edit), name='product-edit'),
+    path('product-edit/<int:id>/', login_required(product_edit), name='product-edit'),
 
     path('product-list/', login_required(product_list), name='product-list'),
 

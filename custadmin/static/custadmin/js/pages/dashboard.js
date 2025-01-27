@@ -264,6 +264,7 @@ class VectorMap {
         { name: "Russia", coords: [61, 105] },
         { name: "China", coords: [35.8617, 104.1954] },
         { name: "United States", coords: [37.0902, -95.7129] },
+        { name: "Greenland", coords: [72, -42] },
       ],
       markerStyle: {
         initial: { fill: "#7f56da" },

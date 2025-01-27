@@ -127,6 +127,7 @@ def category_edit(request, category_id):
 
         # Handle image upload
         if 'category_img' in request.FILES:
+            print("Image received:", request.FILES['category_img'])
             category.category_img = request.FILES['category_img']
 
         category.save()
@@ -270,14 +271,52 @@ def product_details(request):
     herotag = 'View Product Information'
     return render(request, 'custadmin/product-details.html', locals())
 
-def product_edit(request):
+def product_edit(request, id):
     title = 'Admin Panel | Edit Product'
     herotag = 'Update Product Information'
+    
+    product = get_object_or_404(Product, id=id)
+    
+    categories = Category.objects.all()
+    
+    main_price = product.selling_price
+    discount = product. discounted_price
+    
+    discount_percentage = ((main_price - discount) / main_price) * 100
+    
+    if request.method == 'POST':
+        # Get the posted data and update the product fields
+        product.pname = request.POST.get('pname', product.pname)
+        product.selling_price = request.POST.get('selling_price', product.selling_price)
+        product.discounted_price = request.POST.get('discounted_price', product.discounted_price)
+        product.description = request.POST.get('description', product.description)
+        product.composition = request.POST.get('composition', product.composition)
+        product.prodapp = request.POST.get('prodapp', product.prodapp)
+        product.category_id = request.POST.get('category', product.category_id)
+
+        # Check if there's a new product image and handle it
+        if 'product_img' in request.FILES:
+            product.product_img = request.FILES['product_img']
+
+        # Save the updated product
+        product.save()
+        
+        messages.success(request, f'Product "<strong style="color:#FF9A69;">{product.pname}</strong>" updated successfully!')
+        return redirect('product-list')
+    
     return render(request, 'custadmin/product-edit.html', locals())
 
 def product_list(request):
     title = 'Admin Panel | Product List'
     herotag = 'View All Products'
+    
+    products = Product.objects.all()
+    
+    # Set up pagination (6 products per page)
+    paginator = Paginator(products, 6)  # Show 6 products per page
+    page_number = request.GET.get('page')  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)
+    
     return render(request, 'custadmin/product-list.html', locals())
 
 def purchase_list(request):
