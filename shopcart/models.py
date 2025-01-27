@@ -36,6 +36,10 @@ class OrderPlaced(models.Model):
     @property
     def total_cost(self):
         return self.quantity * self.product.discounted_price
+    
+    @property
+    def total_quantity(self):
+        return self.items.aggregate(total_quantity=models.Sum('quantity'))['total_quantity'] or 0
 
 class OrderItem(models.Model):
     order = models.ForeignKey(OrderPlaced, on_delete=models.CASCADE, related_name='items')

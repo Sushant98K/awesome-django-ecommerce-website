@@ -4,9 +4,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
-from django.http import HttpResponse
 from django.core.paginator import Paginator
 from product.models import *
+from shopcart.models import *
 
 
 @login_required(login_url='login')
@@ -235,6 +235,17 @@ def order_detail(request):
 def orders_list(request):
     title = 'Admin Panel | Orders List'
     herotag = 'View All Orders'
+    
+    orders = OrderPlaced.objects.all().order_by('-order_date')
+    
+    # Set up pagination
+    paginator = Paginator(orders, 5)  # Show 5 orders per page
+    page_number = request.GET.get('page')  # Get the page number from query parameters
+    page_obj = paginator.get_page(page_number)  # Fetch the specific page
+    
+    start_index = (page_obj.number - 1) * paginator.per_page + 1
+    end_index = start_index + len(page_obj.object_list) - 1
+    
     return render(request, 'custadmin/orders-list.html', locals())
 
 def pages_404(request):

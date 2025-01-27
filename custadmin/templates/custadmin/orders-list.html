@@ -187,61 +187,15 @@
                                                             </tr>
                                                        </thead>
                                                        <tbody>
-                                                            <tr>
-                                                                 <td>
-                                                                      #583488/80
-                                                                 </td>
-                                                                 <td>Apr 23 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">Gail C. Anderson</a>
-                                                                 </td>
-                                                                 <td> Normal</td>
-                                                                 <td> $1,230.00</td>
-                                                                 <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Unpaid</span></td>
-                                                                 <td> 4</td>
-                                                                 <td> -</td>
-                                                                 <td> <span class="badge border border-secondary text-secondary  px-2 py-1 fs-13">Draft</span></td>
-                                                                 <td>
-                                                                      <div class="d-flex gap-2">
-                                                                           <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                      </div>
-                                                                 </td>
-                                                            </tr>
 
                                                             <tr>
-                                                                 <td>
-                                                                      #456754/80
-                                                                 </td>
-                                                                 <td>Apr 20 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">Jung S. Ayala</a>
-                                                                 </td>
-                                                                 <td> Normal</td>
-                                                                 <td> $987.00</td>
-                                                                 <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
-                                                                 <td> 2</td>
-                                                                 <td> -</td>
-                                                                 <td> <span class="badge border border-warning text-warning  px-2 py-1 fs-13">Packaging</span></td>
-                                                                 <td>
-                                                                      <div class="d-flex gap-2">
-                                                                           <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                      </div>
-                                                                 </td>
-                                                            </tr>
-                                                            <tr>
-                                                                 <td>
-                                                                      #578246/80
-                                                                 </td>
+                                                                 <td>#578246/Test</td>
                                                                  <td>Apr 19 , 2024</td>
                                                                  <td>
                                                                       <a href="#!" class="link-primary fw-medium">David A. Arnold</a>
                                                                  </td>
                                                                  <td> High</td>
-                                                                 <td> $1,478.00</td>
+                                                                 <td> ₹1,478.00</td>
                                                                  <td> <span class="badge  bg-success text-light px-2 py-1 fs-13">Paid</span></td>
                                                                  <td> 5</td>
                                                                  <td> #D-57837678</td>
@@ -256,15 +210,13 @@
                                                             </tr>
 
                                                             <tr>
-                                                                 <td>
-                                                                      #348930/80
-                                                                 </td>
+                                                                 <td>#348930/Test</td>
                                                                  <td>Apr 04 , 2024</td>
                                                                  <td>
                                                                       <a href="#!" class="link-primary fw-medium">Cecile D. Gordon</a>
                                                                  </td>
                                                                  <td> Normal</td>
-                                                                 <td> $720.00</td>
+                                                                 <td> ₹720.00</td>
                                                                  <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Refund</span></td>
                                                                  <td> 4</td>
                                                                  <td> -</td>
@@ -277,22 +229,42 @@
                                                                       </div>
                                                                  </td>
                                                             </tr>
-
-
+                                                            
+                                                       {% comment %} {% for order in orders %}
+                                                                 
                                                             <tr>
+                                                                 <td>#{{order.orderId}}</td>
+                                                                 <td>{{order.order_date|date:"F d, Y"}}</td>
                                                                  <td>
-                                                                      #391367/80
-                                                                 </td>
-                                                                 <td>Apr 02 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">William Moreno</a>
+                                                                      <a href="#!" class="link-primary fw-medium">{{order.user.first_name}} {{order.user.last_name}}</a>
                                                                  </td>
                                                                  <td> Normal</td>
-                                                                 <td> $1,909.00</td>
-                                                                 <td><span class="badge  bg-success text-light px-2 py-1 fs-13">Paid</span></td>
-                                                                 <td> 6</td>
-                                                                 <td> #D-89734235</td>
-                                                                 <td> <span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
+                                                                 <td> ₹{{order.total_price}}</td>
+                                                                 
+                                                                 {% if order.status == "Paid" %}
+                                                                      <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
+                                                                 {% elif order.status == "Pending" %}
+                                                                      <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Unpaid</span></td>
+                                                                 {% else %}
+                                                                      <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Refund</span></td>
+                                                                 {% endif %}
+                                                                 <td> {{order.total_quantity}} </td>
+                                                                 
+                                                                 {% if order.payment_id %}
+                                                                      <td> #D-{{order.payment_id|slice:"4:"}} </td>
+                                                                 {% else %}
+                                                                      <td> - </td>
+                                                                 {% endif %}
+
+                                                                 
+                                                                 {% if order.status == "Paid" %}
+                                                                      <td> <span class="badge border border-warning text-warning  px-2 py-1 fs-13">Packaging</span></td>
+                                                                 {% elif order.status == "Pending" %}
+                                                                      <td> <span class="badge border border-secondary text-secondary  px-2 py-1 fs-13">Draft</span></td>
+                                                                 {% else %}
+                                                                      <td> <span class="badge border border-danger text-danger  px-2 py-1 fs-13">Canceled</span></td>
+                                                                 {% endif %}
+                                                                 
                                                                  <td>
                                                                       <div class="d-flex gap-2">
                                                                            <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
@@ -301,22 +273,37 @@
                                                                       </div>
                                                                  </td>
                                                             </tr>
-
-
+                                                                 
+                                                       {% endfor %} {% endcomment %}
+                                                       {% for order in page_obj %}
                                                             <tr>
+                                                                 <td>#{{ order.orderId }}</td>
+                                                                 <td>{{ order.order_date|date:"F d, Y" }}</td>
                                                                  <td>
-                                                                      #930447/80
+                                                                      <a href="#!" class="link-primary fw-medium">{{ order.user.first_name }} {{ order.user.last_name }}</a>
                                                                  </td>
-                                                                 <td>March 28 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">Alphonse Roy</a>
-                                                                 </td>
-                                                                 <td> High</td>
-                                                                 <td> $879.00</td>
-                                                                 <td><span class="badge  bg-success text-light px-2 py-1 fs-13">Paid</span></td>
-                                                                 <td> 4</td>
-                                                                 <td> #D-35227268</td>
-                                                                 <td><span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
+                                                                 <td>Normal</td>
+                                                                 <td>₹{{ order.total_price }}</td>
+                                                                 {% if order.status == "Paid" %}
+                                                                      <td><span class="badge bg-success text-light px-2 py-1 fs-13">Paid</span></td>
+                                                                 {% elif order.status == "Pending" %}
+                                                                      <td><span class="badge bg-light text-dark px-2 py-1 fs-13">Unpaid</span></td>
+                                                                 {% else %}
+                                                                      <td><span class="badge bg-light text-dark px-2 py-1 fs-13">Refund</span></td>
+                                                                 {% endif %}
+                                                                 <td>{{ order.total_quantity }}</td>
+                                                                 {% if order.payment_id %}
+                                                                      <td>#D-{{ order.payment_id|slice:"4:" }}</td>
+                                                                 {% else %}
+                                                                      <td>-</td>
+                                                                 {% endif %}
+                                                                 {% if order.status == "Paid" %}
+                                                                      <td><span class="badge border border-warning text-warning px-2 py-1 fs-13">Packaging</span></td>
+                                                                 {% elif order.status == "Pending" %}
+                                                                      <td><span class="badge border border-secondary text-secondary px-2 py-1 fs-13">Draft</span></td>
+                                                                 {% else %}
+                                                                      <td><span class="badge border border-danger text-danger px-2 py-1 fs-13">Canceled</span></td>
+                                                                 {% endif %}
                                                                  <td>
                                                                       <div class="d-flex gap-2">
                                                                            <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
@@ -325,75 +312,8 @@
                                                                       </div>
                                                                  </td>
                                                             </tr>
+                                                       {% endfor %}
 
-                                                            <tr>
-                                                                 <td>
-                                                                      #462397/80
-                                                                 </td>
-                                                                 <td>March 20 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">Pierpont Marleau</a>
-                                                                 </td>
-                                                                 <td> High</td>
-                                                                 <td> $1,230.00</td>
-                                                                 <td> <span class="badge bg-light text-dark  px-2 py-1 fs-13">Refund</span></td>
-                                                                 <td> 2</td>
-                                                                 <td> -</td>
-                                                                 <td> <span class="badge border border-danger text-danger  px-2 py-1 fs-13">Canceled</span></td>
-                                                                 <td>
-                                                                      <div class="d-flex gap-2">
-                                                                           <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                      </div>
-                                                                 </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                 <td>
-                                                                      #472356/80
-                                                                 </td>
-                                                                 <td>March 12 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">Madeleine Gervais</a>
-                                                                 </td>
-                                                                 <td> Normal</td>
-                                                                 <td> $1,264.00</td>
-                                                                 <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
-                                                                 <td> 3</td>
-                                                                 <td> #D-74922656</td>
-                                                                 <td> <span class="badge border border-success text-success  px-2 py-1 fs-13">Completed</span></td>
-                                                                 <td>
-                                                                      <div class="d-flex gap-2">
-                                                                           <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                      </div>
-                                                                 </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                 <td>
-                                                                      #448226/80
-                                                                 </td>
-                                                                 <td>March 02 , 2024</td>
-                                                                 <td>
-                                                                      <a href="#!" class="link-primary fw-medium">Satordi Gaillou</a>
-                                                                 </td>
-                                                                 <td> High</td>
-                                                                 <td> $1,787.00</td>
-                                                                 <td> <span class="badge bg-success text-light  px-2 py-1 fs-13">Paid</span></td>
-                                                                 <td> 4</td>
-                                                                 <td> -</td>
-                                                                 <td> <span class="badge border border-warning text-warning  px-2 py-1 fs-13">Packaging</span></td>
-                                                                 <td>
-                                                                      <div class="d-flex gap-2">
-                                                                           <a href="#!" class="btn btn-light btn-sm"><iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-primary btn-sm"><iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                           <a href="#!" class="btn btn-soft-danger btn-sm"><iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon></a>
-                                                                      </div>
-                                                                 </td>
-                                                            </tr>
 
 
                                                        </tbody>
@@ -401,17 +321,48 @@
                                              </div>
                                              <!-- end table-responsive -->
                                         </div>
+
                                         <div class="card-footer border-top">
-                                             <nav aria-label="Page navigation example">
-                                                  <ul class="pagination justify-content-end mb-0">
-                                                       <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                                                       <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                                                       <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                                                       <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                                                       <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
-                                                  </ul>
-                                             </nav>
+                                             <div class="row g-3">
+                                                  <div class="col-sm">
+                                                       <div class="text-muted">
+                                                            Showing
+                                                            <span class="fw-semibold">{{ start_index }} - {{ end_index }}</span>
+                                                            of
+                                                            <span class="fw-semibold">{{ paginator.count }}</span>
+                                                            orders
+                                                       </div>
+                                                  </div>
+
+                                                  <div class="col-sm-auto">
+                                                       <ul class="pagination justify-content-end mb-0">
+                                                            {% if page_obj.has_previous %}
+                                                                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                                                            {% else %}
+                                                                 <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                                                            {% endif %}
+
+                                                            {% for page_num in page_obj.paginator.page_range %}
+                                                                 {% if page_num == page_obj.number %}
+                                                                      <li class="page-item active"><a class="page-link" href="#">{{ page_num }}</a></li>
+                                                                 {% else %}
+                                                                      <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                                                 {% endif %}
+                                                            {% endfor %}
+
+                                                            {% if page_obj.has_next %}
+                                                                 <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                                                            {% else %}
+                                                                 <li class="page-item disabled"><span class="page-link">Next</span></li>
+                                                            {% endif %}
+                                                       </ul>
+                                                  </div>
+                                             </div>
                                         </div>
+
+
+
+
                                    </div>
                               </div>
 
