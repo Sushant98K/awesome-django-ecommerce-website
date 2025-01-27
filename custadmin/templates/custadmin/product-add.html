@@ -87,7 +87,7 @@
                                         </form>
                                    </div>
                               </div>
-                              <div class="card">
+                              {% comment %} <div class="card">
                                    <div class="card-header">
                                         <h4 class="card-title">Product Information</h4>
                                    </div>
@@ -243,55 +243,128 @@
                                              </div>
                                         </div>
                                    </div>
-                              </div>
-                              <div class="card">
-                                   <div class="card-header">
-                                        <h4 class="card-title">Pricing Details</h4>
+                              </div> {% endcomment %}
+                              <form method="POST" enctype="multipart/form-data">
+                                   {% csrf_token %}
+                                   <div class="card">
+                                        <div class="card-header">
+                                             <h4 class="card-title">Product Information</h4>
+                                        </div>
+                                        <div class="card-body">
+                                             <div class="row">
+                                                       <!-- Product Name -->
+                                                       <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                 <label for="pname" class="form-label">Product Name</label>
+                                                                 <input type="text" name="pname" id="pname" class="form-control" placeholder="Enter product name">
+                                                            </div>
+                                                       </div>
+                                                       
+                                                       <!-- Category Selection -->
+                                                       <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                 <label for="category" class="form-label">Category</label>
+                                                                 <select name="category" id="category" class="form-control">
+                                                                      <option value="">Select Category</option>
+                                                                      {% for category in categories %}
+                                                                      <option value="{{ category.id }}">{{ category.name }}</option>
+                                                                      {% endfor %}
+                                                                 </select>
+                                                            </div>
+                                                       </div>
+                                             </div>
+
+                                             <div class="row">
+                                                  <div class="col-lg-4">
+                                                       <div class="mb-3">
+                                                            <label for="product-brand" class="form-label">Brand</label>
+                                                            <input type="text" id="product-brand" class="form-control" placeholder="Brand Name">
+                                                       </div>
+                                                  </div>
+                                                       <div class="col-lg-4">
+                                                       <div class="mb-3">
+                                                            <label for="product-weight" class="form-label">Weight</label>
+                                                            <input type="text" id="product-weight" class="form-control" placeholder="In gm & kg" >
+                                                       </div>
+                                                  </div>
+                                                  <div class="col-lg-4">
+                                                       <div class="mb-3">
+                                                            <label for="product_img" class="form-label">Product Image</label>
+                                                            <input type="file" name="product_img" id="product_img" class="form-control">
+                                                       </div>
+                                                  </div>
+                                             </div>
+
+                                             <!-- Description, Composition, and Product Application -->
+                                             <div class="col">
+                                                       <div class="col">
+                                                            <div class="mb-3">
+                                                                 <label for="description" class="form-label">Description</label>
+                                                                 <textarea name="description" id="description" class="form-control" rows="3" placeholder="Enter product description"></textarea>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col">
+                                                            <div class="mb-3">
+                                                                 <label for="composition" class="form-label">Composition</label>
+                                                                 <textarea name="composition" id="composition" class="form-control" rows="3" placeholder="Enter product composition"></textarea>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col">
+                                                            <div class="mb-3">
+                                                                 <label for="prodapp" class="form-label">Application</label>
+                                                                 <textarea name="prodapp" id="prodapp" class="form-control" rows="3" placeholder="Enter product application"></textarea>
+                                                            </div>
+                                                       </div>
+                                             </div>
+                                        </div>
                                    </div>
-                                   <div class="card-body">
-                                        <div class="row">
-                                             <div class="col-lg-4">
-                                                  <form>
+
+                                   <div class="card">
+                                        <div class="card-header">
+                                             <h4 class="card-title">Pricing Details</h4>
+                                        </div>
+                                        <div class="card-body">
+                                             <div class="row">
+                                                  <div class="col-lg-4">
                                                        <label for="product-price" class="form-label">Price</label>
                                                        <div class="input-group mb-3">
-                                                            <span class="input-group-text fs-20"><i class='bx bx-dollar'></i></span>
-                                                            <input type="number" id="product-price" class="form-control" placeholder="000">
+                                                            <span class="input-group-text fs-20"><i class='bx bx-rupee'></i></span>
+                                                            <input type="text" name="selling_price" id="selling_price" class="form-control" placeholder="Enter selling price">
                                                        </div>
-                                                  </form>
-                                             </div>
-                                             <div class="col-lg-4">
-                                                  <form>
+                                                  </div>
+                                                  <div class="col-lg-4">
                                                        <label for="product-discount" class="form-label">Discount</label>
                                                        <div class="input-group mb-3">
                                                             <span class="input-group-text fs-20"><i class='bx bxs-discount'></i></span>
-                                                            <input type="number" id="product-discount" class="form-control" placeholder="000">
+                                                            <input type="text" name="discounted_price" id="discounted_price" class="form-control" placeholder="Enter discounted price">
                                                        </div>
-                                                  </form>
-                                             </div>
-                                             <div class="col-lg-4">
-                                                  <form>
+                                                  </div>
+                                                  <div class="col-lg-4">
                                                        <label for="product-tex" class="form-label">Tex</label>
                                                        <div class="input-group mb-3">
                                                             <span class="input-group-text fs-20"><i class='bx bxs-file-txt'></i></span>
                                                             <input type="number" id="product-tex" class="form-control" placeholder="000">
                                                        </div>
-                                                  </form>
+                                                  </div>
                                              </div>
                                         </div>
                                    </div>
-                              </div>
-                              <div class="p-3 bg-light mb-3 rounded">
-                                   <div class="row justify-content-end g-2">
-                                        <div class="col-lg-2">
-                                             <a href="#!" class="btn btn-outline-secondary w-100">Create Product</a>
-                                        </div>
-                                        <div class="col-lg-2">
-                                             <a href="#!" class="btn btn-primary w-100">Cancel</a>
+                                   <div class="p-3 bg-light mb-3 rounded">
+                                        <div class="row justify-content-end g-2">
+                                             <div class="col-lg-2">
+                                                  <button type="submit" class="btn btn-outline-secondary w-100">Add Product</button>
+                                             </div>
+                                             <div class="col-lg-2">
+                                                  <a href="{% url 'product-list' %}" class="btn btn-primary w-100">Cancel</a>
+                                             </div>
                                         </div>
                                    </div>
-                              </div>
+                              </form>
                          </div>
                     </div>
      </div>
+
+
+     {% include 'custadmin/components/popup.html' %}
      
 {% endblock maincontainer %}

@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
 from django.http import HttpResponse
@@ -264,11 +265,66 @@ def pages_review(request):
 def product_add(request):
     title = 'Admin Panel | Add Product'
     herotag = 'Create New Product'
+    
+    categories = Category.objects.all()
+    
+    if request.method == "POST":
+        pname = request.POST.get('pname')
+        selling_price = request.POST.get('selling_price')
+        discounted_price = request.POST.get('discounted_price')
+        description = request.POST.get('description', '')
+        composition = request.POST.get('composition', '')
+        prodapp = request.POST.get('prodapp', '')
+        category_id = request.POST.get('category')
+        product_img = request.FILES.get('product_img')
+
+        if not pname or not category_id or not selling_price or not discounted_price:
+            messages.error(request, "Please fill in all the required fields.")
+            return render(request, 'custadmin/product-add.html', locals())
+
+        try:
+            category = Category.objects.get(id=category_id)
+            product = Product(
+                pname=pname,
+                selling_price=selling_price,
+                discounted_price=discounted_price,
+                description=description,
+                composition=composition,
+                prodapp=prodapp,
+                category=category,
+                product_img=product_img
+            )
+            product.save()
+            messages.success(request, "Product added successfully.")
+            return redirect('product-list')
+        except Category.DoesNotExist:
+            messages.error(request, "Selected category does not exist.")
+    
     return render(request, 'custadmin/product-add.html', locals())
 
-def product_details(request):
+def product_delete(request, product_id):
+    if request.method == 'POST':
+        try:
+            product = Product.objects.get(id=product_id)
+            product.delete()
+            messages.success(request, f'Product "{product.pname}" deleted successfully!')
+            return JsonResponse({'success': True})
+        except Exception as e:
+            messages.error(request, f'Error deleting category: {str(e)}')
+            return JsonResponse({'success': False})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+def product_details(request, id):
     title = 'Admin Panel | Product Details'
     herotag = 'View Product Information'
+    
+    product = get_object_or_404(Product, id=id)
+    
+    main_price = product.selling_price
+    discount = product. discounted_price
+    discount_percentage = ((main_price - discount) / main_price) * 100
+    
     return render(request, 'custadmin/product-details.html', locals())
 
 def product_edit(request, id):
@@ -313,7 +369,7 @@ def product_list(request):
     products = Product.objects.all()
     
     # Set up pagination (6 products per page)
-    paginator = Paginator(products, 6)  # Show 6 products per page
+    paginator = Paginator(products, 8)  # Show 6 products per page
     page_number = request.GET.get('page')  # Get the page number from the request
     page_obj = paginator.get_page(page_number)
     

@@ -68,8 +68,10 @@ urlpatterns = [
     path('pages-review/', login_required(pages_review), name='pages-review'),
 
     path('product-add/', login_required(product_add), name='product-add'),
+    
+    path('product-delete/<int:product_id>/', login_required(product_delete), name='product-delete'),
 
-    path('product-details/', login_required(product_details), name='product-details'),
+    path('product-details/<int:id>/', login_required(product_details), name='product-details'),
 
     path('product-edit/<int:id>/', login_required(product_edit), name='product-edit'),
 
