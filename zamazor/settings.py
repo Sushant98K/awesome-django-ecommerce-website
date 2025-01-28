@@ -40,15 +40,20 @@ RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
 RAZORPAY_SECRET_KEY = os.getenv('RAZORPAY_SECRET_KEY')
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'apikey'
-# EMAIL_HOST_PASSWORD =  os.environ.get('SENDGRID_API_KEY')
-EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')
-DEFAULT_FROM_EMAIL = 'zamazor.ecom@gmail.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'apikey'
+# # EMAIL_HOST_PASSWORD =  os.environ.get('SENDGRID_API_KEY')
+# EMAIL_HOST_PASSWORD = os.getenv('SENDGRID_API_KEY')
+# DEFAULT_FROM_EMAIL = 'zamazor.ecom@gmail.com'
 
+
+# Email Settings for Mailgun
+MAILGUN_API_URL = "https://api.mailgun.net/v3/" + os.getenv("MAILGUN_DOMAIN", "")
+MAILGUN_API_KEY = os.getenv("MAILGUN_API_KEY")
+MAILGUN_FROM_EMAIL = f"Zamazor <mailgun@{os.getenv('MAILGUN_DOMAIN', '')}>"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
