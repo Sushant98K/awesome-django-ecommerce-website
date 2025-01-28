@@ -74,46 +74,6 @@ def userregister(request):
     return render(request, 'userregister.html')
 
 
-# def resetpass(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-
-        if not email:
-            messages.error(request, "Email field is required.")
-            return redirect('resetpass')
-
-        if not User.objects.filter(email=email).exists():
-            messages.error(request, "Email does not exist.")
-            return redirect('resetpass')
-
-        user = User.objects.get(email=email)
-        token = str(uuid.uuid4())
-
-        # Save or update ResetPass token
-        ResetPass.objects.update_or_create(user=user, defaults={'forget_pass_token': token})
-
-        reset_link = f"http://127.0.0.1:8000/user/passreset/{token}/"
-        subject = 'Password Reset Request'
-        context = {'user': user, 'reset_link': reset_link}
-
-        html_message = render_to_string('emails/reset_password.html', context)
-        plain_message = strip_tags(html_message)
-
-        send_mail(
-            subject,
-            plain_message,
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email],
-            html_message=html_message,
-        )
-        user_email = email
-        messages.success(request, "A reset link has been sent to your email.")
-        # return redirect('resetpass')
-        return render(request, 'send_confirm.html', {'user_email': user_email})
-
-    return render(request, 'resetpass.html')
-
-
 def resetpass(request):
     if request.method == 'POST':
         email = request.POST.get('email')

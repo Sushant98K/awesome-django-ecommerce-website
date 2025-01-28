@@ -1,6 +1,7 @@
 
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+import requests
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -212,7 +213,7 @@ def paymentsuccess(request):
             # Optionally clear the user's cart
             Cart.objects.filter(user=request.user).delete()
             
-            #confirmation email to user 
+            # confirmation email to user
             subject = f"Order - {order.orderId} - Payment Successful"
             order_items = OrderItem.objects.filter(order=order)
             context = {
@@ -222,19 +223,29 @@ def paymentsuccess(request):
                 'total_bill': total_bill
             }
             
-            #render email content from template
+            # render email content from template
             html_message = render_to_string('emails/order_confirmation.html', context)
             plain_message = strip_tags(html_message)
 
-            #using mailgrid to send email notification
-            send_mail(
-                subject,
-                plain_message,
-                settings.DEFAULT_FROM_EMAIL,
-                [request.user.email],
-                html_message=html_message,
+            # Prepare Mailgun email data
+            mailgun_data = {
+                "from": settings.MAILGUN_FROM_EMAIL,
+                "to": request.user.email,
+                "subject": subject,
+                "text": plain_message,
+                "html": html_message,
+            }
+
+            # Send email via Mailgun API
+            response = requests.post(
+                f"{settings.MAILGUN_API_URL}/messages",
+                auth=("api", settings.MAILGUN_API_KEY),
+                data=mailgun_data
             )
-            
+
+            if response.status_code != 200:
+                # Log the error or handle it if necessary
+                print(f"Mailgun email sending failed: {response.text}")
             
             # Set toast message in the session
             request.session['toast_message'] = (
