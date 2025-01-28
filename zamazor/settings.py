@@ -169,6 +169,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 #lgoin decoretor
 LOGIN_URL = '/user/login/'
 
