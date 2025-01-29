@@ -53,7 +53,7 @@ urlpatterns = [
 
     path('order-checkout/', login_required(order_checkout), name='order-checkout'),
 
-    path('order-detail/', login_required(order_detail), name='order-detail'),
+    path('order-detail/<str:orderId>/', login_required(order_detail), name='order-detail'),
 
     path('orders-list/', login_required(orders_list), name='orders-list'),
 

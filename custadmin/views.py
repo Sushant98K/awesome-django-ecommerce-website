@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.csrf import csrf_exempt
+from datetime import timedelta
 from django.http import JsonResponse
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -227,9 +227,16 @@ def order_checkout(request):
     herotag = 'Proceed with Checkout'
     return render(request, 'custadmin/order-checkout.html', locals())
 
-def order_detail(request):
+def order_detail(request, orderId):
     title = 'Admin Panel | Order Details'
     herotag = 'View Order Information'
+    
+    order = get_object_or_404(OrderPlaced, orderId=orderId)
+    cart_total = order.total_price - 50
+    order_items = OrderItem.objects.filter(order=order)
+    estimated_date = order.order_date + timedelta(days=25)
+    
+    
     return render(request, 'custadmin/order-detail.html', locals())
 
 def orders_list(request):
