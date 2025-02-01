@@ -398,84 +398,33 @@
                                                                  <i class="bx bxs-circle text-success me-1"></i>Completed
                                                             </td>
                                                        </tr>
+                                                       {% for order in orders %}
                                                        <tr>
                                                             <td class="ps-3">
-                                                                 <a href="order-detail.html">#RB9652</a>
+                                                                 <a href="{% url 'order-detail' order.orderId %}">#{{ order.orderId }}</a>
                                                             </td>
-                                                            <td>25 April 2024</td>
+                                                            <td>{{ order.order_date|date:"d F Y" }}</td>
                                                             <td>
-                                                                 <img src="{% static 'custadmin/images/products/product-4.png' %}" alt="product-4" class="img-fluid avatar-sm">
+                                                                 {% for item in order.items.all %}
+                                                                      <img src="{{ item.product.product_img.url }}" alt="{{ item.product.pname }}" class="img-fluid avatar-sm">
+                                                                 {% endfor %}
                                                             </td>
                                                             <td>
-                                                                 <a href="#!">Judith H. Fritsche</a>
+                                                                 <a href="#!">{{ order.user.first_name }} {{ order.user.last_name }}</a>
                                                             </td>
-                                                            <td>judith.fritsche.com</td>
-                                                            <td>(+57)-305-5579-759</td>
-                                                            <td>SULLIVAN/Kentucky</td>
+                                                            <td>{{ order.user.email }}</td>
+                                                            <td>{{ order.profile.phone }}</td>
+                                                            <td>{{ order.profile.shipping_address }}</td>
                                                             <td>Credit Card</td>
                                                             <td>
+                                                                 {% if order.status == 'Completed' %}
                                                                  <i class="bx bxs-circle text-success me-1"></i>Completed
+                                                                 {% else %}
+                                                                 <i class="bx bxs-circle text-warning me-1"></i>{{ order.status }}
+                                                                 {% endif %}
                                                             </td>
                                                        </tr>
-                                                       <tr>
-                                                            <td class="ps-3">
-                                                                 <a href="order-detail.html">#RB5984</a>
-                                                            </td>
-                                                            <td>25 April 2024</td>
-                                                            <td>
-                                                                 <img src="{% static 'custadmin/images/products/product-5.png' %}" alt="product-5" class="img-fluid avatar-sm">
-                                                            </td>
-                                                            <td>
-                                                                 <a href="#!">Peter T. Smith</a>
-                                                            </td>
-                                                            <td>peter.smith@mail.com</td>
-                                                            <td>(+33)-655-5187-93</td>
-                                                            <td>Yreka/California</td>
-                                                            <td>Pay Pal</td>
-                                                            <td>
-                                                                 <i class="bx bxs-circle text-success me-1"></i>Completed
-                                                            </td>
-                                                       </tr>
-                                                       <tr>
-                                                            <td class="ps-3">
-                                                                 <a href="order-detail.html">#RB3625</a>
-                                                            </td>
-                                                            <td>21 April 2024</td>
-                                                            <td>
-                                                                 <img src="{% static 'custadmin/images/products/product-6.png' %}" alt="product-6" class="img-fluid avatar-sm">
-                                                            </td>
-                                                            <td>
-                                                                 <a href="#!">Emmanuel J. Delcid</a>
-                                                            </td>
-                                                            <td>
-                                                                 emmanuel.delicid@mail.com
-                                                            </td>
-                                                            <td>(+30)-693-5553-637</td>
-                                                            <td>Atlanta/Georgia</td>
-                                                            <td>Pay Pal</td>
-                                                            <td>
-                                                                 <i class="bx bxs-circle text-primary me-1"></i>Processing
-                                                            </td>
-                                                       </tr>
-                                                       <tr>
-                                                            <td class="ps-3">
-                                                                 <a href="order-detail.html">#RB8652</a>
-                                                            </td>
-                                                            <td>18 April 2024</td>
-                                                            <td>
-                                                                 <img src="{% static 'custadmin/images/products/product-1(2).png' %}" alt="product-1(2)" class="img-fluid avatar-sm">
-                                                            </td>
-                                                            <td>
-                                                                 <a href="#!">William J. Cook</a>
-                                                            </td>
-                                                            <td>william.cook@mail.com</td>
-                                                            <td>(+91)-855-5446-150</td>
-                                                            <td>Rosenberg/Texas</td>
-                                                            <td>Credit Card</td>
-                                                            <td>
-                                                                 <i class="bx bxs-circle text-primary me-1"></i>Processing
-                                                            </td>
-                                                       </tr>
+                                                       {% endfor %}
                                                   </tbody>
                                                   <!-- end tbody -->
                                              </table>

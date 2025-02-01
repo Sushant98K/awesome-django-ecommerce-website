@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import timedelta
 from django.http import JsonResponse
@@ -17,6 +17,10 @@ def dashboard(request):
     
     title = 'Admin Panel | Dashboard Overview'
     herotag = 'Welcome!'
+    
+    # Get the recent orders
+    orders = OrderPlaced.objects.prefetch_related('user', 'profile', 'items__product').order_by('-order_date')[:10]
+    
     
     return render(request, 'custadmin/dashboard.html', locals())
 
@@ -40,9 +44,27 @@ def apps_todo(request):
     herotag = 'Task Management'
     return render(request, 'custadmin/apps-todo.html', locals())
 
+# Function to check if the user is an admin
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
+# Lock Screen View
+@user_passes_test(is_admin)
+@login_required(login_url='/user/login/')  # Keep the existing login URL
 def auth_lock_screen(request):
     title = 'Admin Panel | Lock Screen'
     herotag = 'Secure Your Session'
+
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = authenticate(username=request.user.username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')  # Redirect to dashboard after successful login
+        else:
+            messages.error(request, 'Invalid password. Please try again.')
+
     return render(request, 'custadmin/auth-lock-screen.html', locals())
 
 def auth_password(request):
