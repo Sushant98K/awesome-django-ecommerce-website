@@ -212,6 +212,9 @@ def customer_detail(request):
 def customer_list(request):
     title = 'Admin Panel | Customer List'
     herotag = 'View All Customers'
+    
+    users = User.objects.all()
+    
     return render(request, 'custadmin/customer-list.html', locals())
 
 def inventory_received_orders(request):
