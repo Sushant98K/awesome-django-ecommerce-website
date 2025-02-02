@@ -12,7 +12,8 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
      <!-- App favicon -->
-     <link rel="shortcut icon" href="{% static 'custadmin/images/favicon.ico' %}">
+     {% comment %} <link rel="shortcut icon" href="{% static 'custadmin/images/favicon.ico' %}"> {% endcomment %}
+     <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 
      <!-- Vendor css (Require in all Page) -->
      <link href="{% static 'custadmin/css/vendor.min.css' %}" rel="stylesheet" type="text/css" />
@@ -506,7 +507,7 @@
                                              <a class="sub-nav-link" href=" {% url 'product-list' %} ">List</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href=" {% url 'pages-maintenance' %} ">Grid</a>
+                                             <a class="sub-nav-link" href=" {% url 'pages-404' %} ">Grid</a>
                                         </li>
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href=" {% url 'product-details' 1 %} ">Details</a>
@@ -577,7 +578,7 @@
                                              <a class="sub-nav-link" href=" {% url 'orders-list' %} ">List</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href=" {% url 'order-detail' 0 %} ">Details</a>
+                                             <a class="sub-nav-link" href=" {% url 'order-detail' 2025020392 %} ">Details</a>
                                         </li>
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href=" {% url 'order-cart' %} ">Cart</a>
