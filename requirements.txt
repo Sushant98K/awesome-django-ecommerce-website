@@ -27,6 +27,8 @@ packaging==24.2
 pillow==11.0.0
 platformdirs==4.3.6
 propcache==0.2.1
+psycopg2==2.9.10
+psycopg2-binary==2.9.10
 python-decouple==3.8
 python-dotenv==1.0.1
 python-http-client==3.3.7
