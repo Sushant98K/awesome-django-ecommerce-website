@@ -12,6 +12,6 @@
 
 <div align="center">
 
-![Watch the video](E:\Full-Stack Projects\zamazor\Meta\zamazorDemo.gif)
+![Watch the video](https://github.com/Sushant98K/awesome-django-ecommerce-website/blob/main/Meta/zamazorDemo.gif)
 
 </div>
