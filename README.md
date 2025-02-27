@@ -9,3 +9,9 @@
 ![Alt Text](Meta/E-commerce.svg)
 
 </div>
+
+<div align="center">
+
+![Watch the video](E:\Full-Stack Projects\zamazor\Meta\zamazorDemo.gif)
+
+</div>
