@@ -11,5 +11,7 @@
 </div>
 
 <div align="center">
+  
 ![Watch the video](https://github.com/Sushant98K/awesome-django-ecommerce-website/blob/main/Meta/zamazorDemo.gif)
+
 </div>
